@@ -12,33 +12,6 @@ namespace PooBasics
         private int length;
         private int height;
 
-        //public void SetHeight(int height)
-        //{
-        //    if (height <= 0)
-        //    {
-        //        throw new ArgumentException("height");
-        //    }
-
-        //    this.height = height;
-        //}
-
-        //public int GetHeight() => height;
-
-        public int Height
-        {
-            set
-            {
-                if (value <= 0)
-                {
-                    throw new ArgumentException("height");
-                }
-
-                height = value;
-            }
-
-            get => height;
-        }
-
         public int Width
         {
             set
@@ -69,50 +42,62 @@ namespace PooBasics
             get => length;
         }
 
-        //public int Volume
-        //{
-        //    get => width * length * height;
-        //}
+        public int Height
+        {
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentException("height");
+                }
+
+                height = value;
+            }
+
+            get => height;
+        }
 
         public int Volume => width * length * height;
 
-        //public int Volume() => width * length * height;
+        public Box() : this(1) {}
 
-        //public static int CalculateVolume(Box box) =>
-        //    box.width* box.length* box.height;
+        public Box(int size) : this(size, size, size) {}
+
+        public Box(int width, int length, int height)
+        {
+            Width = width;
+            Length = length;
+            Height = height;
+        }
     }
 
     internal class Program
     {
-        //static int CalculateVolume(int width, int length, int height) =>
-        //    width * length * height;
-
-        //static int CalculateVolume(Box box) =>
-        //    box.width * box.length * box.height;
-
         static void Main(string[] args)
         {
+            Box b1 = new Box(4, 2, 3);
+            //b1.Width = 4;
+            //b1.Length = 2;
+            //b1.Height = 3;
+
+            //Box b2 = new Box() { Width = 5, Length = 5, Height = 5 };
+            //Box b2 = new Box(5, 5, 5);
+            Box b2 = new Box(5);
+            Box b3 = new Box();
+
+            Console.WriteLine($"[{b1.Width},{b1.Length},{b1.Height}]");
+            Console.WriteLine($"[{b2.Width},{b2.Length},{b2.Height}]");
+            Console.WriteLine($"[{b3.Width},{b3.Length},{b3.Height}]");
+
+            // ***************************************
+
             List<Box> boxes = new List<Box>();
             boxes.Add(new Box() { Width = 2, Length = 1, Height = 3 });
-            //boxes[0].SetHeight(3);
-            //boxes[0].Height = -3;
-
             boxes.Add(new Box() { Width = 1, Length = 1, Height = 3 });
-            //boxes[1].SetHeight(3);
-
             boxes.Add(new Box() { Width = 3, Length = 5, Height = 1 });
-            //boxes[2].height = boxes[0].height + boxes[1].height;
-            //boxes[2].SetHeight(boxes[0].GetHeight() + boxes[1].GetHeight());
-            //boxes[2].Height = boxes[0].Height + boxes[1].Height;
-
-            //for (int i = 0; i < 3; ++i)
-            //{
-            //    Console.WriteLine($"[{boxes[i].width},{boxes[i].length},{boxes[i].height}]");
-            //}
 
             foreach (Box box in boxes)
             {
-                //Console.WriteLine($"[{box.width},{box.length},{box.height}]");
                 Console.WriteLine($"[{box.Width},{box.Length},{box.Height}]");
             }
 
@@ -124,27 +109,7 @@ namespace PooBasics
                 total += box.Volume;
             }
 
-            //for (int i = 0; i < 3; ++i)
-            //{
-            //    total += boxes[i].Volume();
-            //}
-
             Console.WriteLine($"Volumen total = {total}");
         }
-
-        //static void Main_1(string[] args)
-        //{
-        //    Box box = new Box();
-        //    box.width = 1;
-        //    box.length = 2;
-        //    box.height = 3;
-
-        //    //int volume = box.width * box.length * box.height;
-        //    //int volume = CalculateVolume(box.width, box.length, box.height);
-        //    //int volume = CalculateVolume(box);
-        //    //int volume = Box.CalculateVolume(box);
-        //    int volume = box.Volume();
-        //    Console.WriteLine($"Volume: {volume}");
-        //}
     }
 }

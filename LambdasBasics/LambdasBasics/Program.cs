@@ -10,6 +10,22 @@ namespace LambdasBasics
 {
     internal class Program
     {
+        //static double Square(double value)
+        //{
+        //    return value * value;
+        //}
+
+        //static double Absolute(double value)
+        //{
+        //    return Math.Abs(value);
+        //}
+
+        delegate double Operation(double value);
+        static double SpecialFunction(double x, double y, Operation op)
+        {
+            return op(x) + op(y);
+        }
+
         class Patient
         {
             public string FirstName { get; set; }
@@ -30,6 +46,14 @@ namespace LambdasBasics
             }
         }
 
+        static void PrintPatients(List<Patient> patients)
+        {
+            WriteLine("\n*****************************************");
+            patients.ForEach(p =>
+                WriteLine($"Nombre: {p.FullName,20}. Edad: {p.Age,2}, " +
+                    $"Peso: {p.Weight,2}, Asegurado: {p.Insurance,4}"));
+        }
+
         static void Main(string[] args)
         {
             List<Patient> patients = new List<Patient>();
@@ -42,15 +66,40 @@ namespace LambdasBasics
             patients.Add(new Patient("Humberto", "Izquierdo", 61, 78, true));
             patients.Add(new Patient("Fernando", "Martinez", 18, 65, false));
 
+            Patient pf = patients.Find(p => p.Age == 35);
+            WriteLine($"Nombre: {pf.FullName,20}. Edad: {pf.Age,2}, " +
+                    $"Peso: {pf.Weight,2}, Asegurado: {pf.Insurance,4}");
+
+            var f1 = patients.FindAll(p => p.Insurance);
+            PrintPatients(f1);
+
+            var f2 = patients.FindAll(p => !p.Insurance && p.Age < 50 && p.Weight > 70);
+            PrintPatients(f2);
+
+            patients.Sort((pA, pB) => pB.LastName.CompareTo(pA.LastName));
+            PrintPatients(patients);
+
+            bool e1 = patients.Exists(p => p.LastName == "Izquierdo");
+            WriteLine($"\nIzquierdo está presente: {e1}");
+
             //foreach (Patient p in patients)
             //{
             //    WriteLine($"Nombre: {p.FullName,20}. Edad: {p.Age,2}, " +
             //        $"Peso: {p.Weight,2}, Asegurado: {p.Insurance,4}");
             //}
 
-            patients.ForEach(p =>
-                WriteLine($"Nombre: {p.FullName,20}. Edad: {p.Age,2}, " +
-                    $"Peso: {p.Weight,2}, Asegurado: {p.Insurance,4}"));
+            /*
+            //double result = SpecialFunction(5, -1, Square);
+            double result = SpecialFunction(5, -1, n => n * n);
+            WriteLine($"Resultado = {result}");
+
+            //result = SpecialFunction(-5, -1, Absolute);
+            result = SpecialFunction(-5, -1, n => Math.Abs(n));
+            WriteLine($"Resultado = {result}");
+
+            result = SpecialFunction(-5, 2, n => n / 2);
+            WriteLine($"Resultado = {result}");
+            */
         }
     }
 }

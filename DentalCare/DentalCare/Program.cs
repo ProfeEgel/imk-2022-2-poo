@@ -219,6 +219,23 @@ namespace DentalCare
                         Write("\nElige un día: ");
                         int opcionDia = Convert.ToInt32(ReadLine());
 
+                        List<Schedule> schedules = agenda.GetAvailableScheduleByDay(days[opcionDia].Id);
+                        WriteLine("\n******* Horario disponible *******");
+                        for (int i = 0; i < schedules.Count; i++)
+                        {
+                            WriteLine($"{i} - {agenda.GetTime(schedules[i].TimeId).Description}");
+                        }
+
+                        Write("\nElige un horario: ");
+                        int opcionHorario = Convert.ToInt32(ReadLine());
+
+                        agenda.ScheduleAppointment(patientId,
+                                                   days[opcionDia].Id,
+                                                   schedules[opcionHorario].TimeId);
+
+                        WriteLine("\n¡La cita se realizó correctamente!");
+                        ReadKey();
+                        // 422086
                     }
                     else
                     {
@@ -239,6 +256,10 @@ namespace DentalCare
             }
         }
 
+        // 1. Validar paciente exista
+        // 2. Validar que el paciente tenga una cita
+        // 3. Borrar cita de lista de appointments
+        // 4. Actualizar archivo
         private static void CancelarCitas()
         {
             throw new NotImplementedException();

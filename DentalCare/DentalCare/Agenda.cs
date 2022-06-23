@@ -95,7 +95,37 @@ namespace DentalCare
             }
             );
 
+            availableDays.Sort((a, b) => a.Id.CompareTo(b.Id));
+
             return availableDays;
+        }
+
+        public List<Schedule> GetAvailableScheduleByDay(int dayId)
+        {
+            List<Schedule> availableSchedules = new List<Schedule>();
+
+            schedules.FindAll(sch => sch.DayId == dayId).ForEach(sch =>
+            {
+                if (!appointments.Exists(a => a.DayId == sch.DayId && a.TimeId == sch.TimeId)) // si horario no está en citas
+                {
+                    availableSchedules.Add(sch);
+                }
+            });
+
+            availableSchedules.Sort((a, b) => a.TimeId.CompareTo(b.TimeId));
+
+            return availableSchedules;
+        }
+
+        public Time GetTime(int timeId) => times.Find(t => t.Id == timeId);
+
+        public void ScheduleAppointment(int patientId, int dayId, int timeId)
+        {
+            // validar que los ID's sean correctos
+            appointments.Add(new Appointment(patientId, dayId, timeId));
+            EasyFile<Appointment>.SaveDataToFile("appointments.txt",
+                                                 new[] { "PatientId", "DayId", "TimeId" },
+                                                 appointments);
         }
     }
 }
